@@ -27,13 +27,13 @@ def newregister(request):
         form = StudForm(request.POST or None)
         
         if form.is_valid():
-            name = form.cleaned_data['s_name']
-            clas = form.cleaned_data['s_class']
-            addr = form.cleaned_data['s_addr']
-            school = form.cleaned_data['s_school']
-            mail = form.cleaned_data['s_email']
+            name = form.cleaned_data['Name']
+            classroom = form.cleaned_data['Classroom']
+            address = form.cleaned_data['Address']
+            school = form.cleaned_data['School']
+            mail = form.cleaned_data['Email']
 
-            p = stud(s_name=name,s_class=clas,s_addr=addr,s_school=school,s_email=mail)
+            p = stud(Name=name,Classroom=classroom,Address=address,School=school,Email=mail)
             p.save()
             return render(request,'registerdone.html',{"title":"Register Successfully"})
 
@@ -61,10 +61,10 @@ def existing(request):
 def search(request):
     if request.user.is_authenticated:
         title= "Search Student"
-        form= SForm(request.POST)
+        form= SForm(request.POST or None)
         if form.is_valid():
-            name = form.cleaned_data['s_name']
-            queryset = stud.objects.filter(s_name=name)
+            name = form.cleaned_data['Name']
+            queryset = stud.objects.filter(Name=name)
             context={
                 'title':title,
                 'queryset':queryset
@@ -79,8 +79,22 @@ def search(request):
     else:
         return HttpResponseRedirect('/')
     
+def update_data(request, id):
+    if request.method == "POST":
+        pi = stud.objects.get(pk=id)
+        form = StudForm(request.POST, instance=pi)
+        if form.is_valid():
+            form.save()
+        return render(request,'existingstud.html',{"title":"Update Successfully"})
+    else:
+        pi = stud.objects.get(pk=id)
+        form = StudForm(instance=pi)
+    return render(request, 'updatestudent.html',{'form':form})
+    
 def delete_data(request, id):
     if request.method == 'POST':
         pi = stud.objects.get(pk=id)
         pi.delete()
         return HttpResponseRedirect('/')
+    
+    
