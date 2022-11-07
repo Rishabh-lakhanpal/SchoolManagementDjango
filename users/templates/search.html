@@ -1,0 +1,12 @@
+{% include 'base.html' %}
+
+{% block content %}
+<html>
+    <center><h1>{{title}}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit">Search Student</button>
+    </form>
+</html>
+{% endblock %}
