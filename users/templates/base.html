@@ -19,7 +19,7 @@
             <h2 class="text-center alert alert-danger">Welcome to School Website</h2>
             
         </div>
-        <ul class="nav">
+        <ul class="nav justify-content-center">
             {% if user.is_authenticated %}
                 <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
@@ -38,7 +38,7 @@
                 </li>
                 <li class="nav-item">
             {% else %}
-                <a class="nav-link" href="{% url 'login' %}">Login</a>
+                <a class="nav-link " href="{% url 'login' %}" >Login</a>
             {% endif %}
             </li>
         </ul>

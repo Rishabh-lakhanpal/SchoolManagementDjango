@@ -28,7 +28,7 @@ def newregister(request):
         
         if form.is_valid():
             name = form.cleaned_data['Name']
-            classroom = form.cleaned_data['Class']
+            classroom = form.cleaned_data['Classroom']
             address = form.cleaned_data['Address']
             school = form.cleaned_data['School']
             mail = form.cleaned_data['Email']
@@ -79,8 +79,22 @@ def search(request):
     else:
         return HttpResponseRedirect('/')
     
+def update_data(request, id):
+    if request.method == "POST":
+        pi = stud.objects.get(pk=id)
+        form = StudForm(request.POST, instance=pi)
+        if form.is_valid():
+            form.save()
+        return render(request,'existingstud.html',{"title":"Update Successfully"})
+    else:
+        pi = stud.objects.get(pk=id)
+        form = StudForm(instance=pi)
+    return render(request, 'updatestudent.html',{'form':form})
+    
 def delete_data(request, id):
     if request.method == 'POST':
         pi = stud.objects.get(pk=id)
         pi.delete()
         return HttpResponseRedirect('/')
+    
+    
